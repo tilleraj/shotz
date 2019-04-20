@@ -1,7 +1,9 @@
+import movies from './components/movies/movies';
+
 import '../styles/main.scss';
 
 const init = () => {
-  console.error('setup is working');
+  movies.initializeMovies();
 };
 
 init();
