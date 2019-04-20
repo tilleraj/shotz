@@ -1,7 +1,11 @@
+import movies from './components/movies/movies';
+import locations from './components/locations/locations';
+
 import '../styles/main.scss';
 
 const init = () => {
-  console.error('setup is working');
+  movies.initializeMovies();
+  locations.initializeLocations();
 };
 
 init();
