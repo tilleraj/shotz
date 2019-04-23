@@ -28,7 +28,6 @@ const shootTimeClass = (shootTime) => {
 
 const domStringBuilder = () => {
   let domString = '';
-  domString += '<h2>Locations:</h2>';
   domString += '<div id="locations" class="row">';
   locations.forEach((location) => {
     domString += `<div id="${location.id}" class="col-12 col-sm-6 col-md-4 col-lg-3">`;

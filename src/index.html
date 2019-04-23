@@ -11,6 +11,23 @@
 <body>
   <div id="app" class="container">
     <div id="movies"></div>
+    <h2>Locations:</h2>
+    <div id="filters">
+      <div class="row">
+        <div id="input-col" class="col-12 col-md-3 col-lg-2">
+          <input type="text" placeholder="Search Here!">
+        </div>
+        <div class="col-12 col-md-8">
+          <div class="d-flex justify-content-around">
+            <button id="all" class="btn btn-outline-dark">All</button>
+            <button id="morning" class="btn btn-secondary">Morning</button>
+            <button id="afternoon" class="btn btn-success">Afternoon</button>
+            <button id="evening" class="btn btn-info">Evening</button>
+            <button id="dark" class="btn btn-danger">After Dark</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="locations"></div>
   </div>
 </body>
