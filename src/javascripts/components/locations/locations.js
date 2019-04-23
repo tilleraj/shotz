@@ -26,10 +26,10 @@ const shootTimeClass = (shootTime) => {
   return selectedClass;
 };
 
-const domStringBuilder = () => {
+const domStringBuilder = (array) => {
   let domString = '';
   domString += '<div id="locations" class="row">';
-  locations.forEach((location) => {
+  array.forEach((location) => {
     domString += `<div id="${location.id}" class="col-12 col-sm-6 col-md-4 col-lg-3">`;
     domString += '  <div class="card location">';
     domString += `    <div class="card-header ${shootTimeClass(location.shootTime)}">`;
@@ -46,12 +46,40 @@ const domStringBuilder = () => {
   util.printToDom('locations', domString);
 };
 
+const filteredLocations = (e) => {
+  const buttonId = e.target.id;
+  const morningLocations = locations.filter(x => x.shootTime === 'Morning');
+  const afternoonLocations = locations.filter(x => x.shootTime === 'Afternoon');
+  const eveningLocations = locations.filter(x => x.shootTime === 'Evening');
+  const darkLocations = locations.filter(x => x.shootTime === 'After Dark');
+  switch (buttonId) {
+    case 'morning':
+      domStringBuilder(morningLocations);
+      break;
+    case 'afternoon':
+      domStringBuilder(afternoonLocations);
+      break;
+    case 'evening':
+      domStringBuilder(eveningLocations);
+      break;
+    case 'dark':
+      domStringBuilder(darkLocations);
+      break;
+    default:
+      domStringBuilder(locations);
+      break;
+  }
+};
+
 const initializeLocations = () => {
   locationsData.getLocationsData()
     .then((response) => {
       const locationResults = response.data.locations;
       locations = locationResults;
-      domStringBuilder();
+      domStringBuilder(locations);
+      document.getElementById('buttons').querySelectorAll('button').forEach((button) => {
+        button.addEventListener('click', filteredLocations);
+      });
     })
     .catch(error => console.error(error));
 };
