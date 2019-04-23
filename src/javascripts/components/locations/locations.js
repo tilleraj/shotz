@@ -71,6 +71,16 @@ const filteredLocations = (e) => {
   }
 };
 
+const filterByTextEvent = (e) => {
+  const searchText = e.target.value;
+  const searchLocations = locations.filter((x) => {
+    const hasName = x.name.includes(searchText);
+    const hasAddress = x.address.includes(searchText);
+    return hasName || hasAddress;
+  });
+  domStringBuilder(searchLocations);
+};
+
 const initializeLocations = () => {
   locationsData.getLocationsData()
     .then((response) => {
@@ -80,6 +90,7 @@ const initializeLocations = () => {
       document.getElementById('buttons').querySelectorAll('button').forEach((button) => {
         button.addEventListener('click', filteredLocations);
       });
+      document.getElementById('search-input').addEventListener('keyup', filterByTextEvent);
     })
     .catch(error => console.error(error));
 };
