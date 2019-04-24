@@ -46,6 +46,14 @@ const domStringBuilder = (array) => {
   util.printToDom('locations', domString);
 };
 
+const movieLocations = (specificMovieLocationsArray) => {
+  const specifiedLocations = [];
+  specificMovieLocationsArray.forEach((movie) => {
+    specifiedLocations.push(locations.filter(x => x.id === movie)[0]);
+  });
+  domStringBuilder(specifiedLocations);
+};
+
 const filteredLocations = (e) => {
   const buttonId = e.target.id;
   const morningLocations = locations.filter(x => x.shootTime === 'Morning');
@@ -95,4 +103,17 @@ const initializeLocations = () => {
     .catch(error => console.error(error));
 };
 
-export default { initializeLocations };
+const showFilters = () => {
+  document.getElementById('filters').style.display = 'block';
+};
+
+const hideFilters = () => {
+  document.getElementById('filters').style.display = 'none';
+};
+
+export default {
+  initializeLocations,
+  movieLocations,
+  showFilters,
+  hideFilters,
+};

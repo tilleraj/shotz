@@ -1,3 +1,4 @@
+import locations from '../locations/locations';
 import moviesData from '../../helpers/data/moviesData';
 import util from '../../helpers/util';
 
@@ -5,13 +6,13 @@ import './movies.scss';
 
 let movies = [];
 
-const domStringBuilder = () => {
+const domStringBuilder = (moviesToPrint) => {
   let domString = '';
   domString += '<h2>Movies:</h2>';
   domString += '<div id="movies" class="row">';
-  movies.forEach((movie) => {
-    domString += `<div id="${movie.id}" class="col-12 col-sm-6 col-md-4 col-lg-3">`;
-    domString += '  <div class="card movie">';
+  moviesToPrint.forEach((movie) => {
+    domString += '<div class="col-12 col-sm-6 col-md-4 col-lg-3">';
+    domString += `  <div id="${movie.id}" class="card movie">`;
     domString += '    <div class="card-header">';
     domString += `      ${movie.name}`;
     domString += '    </div>';
@@ -24,8 +25,33 @@ const domStringBuilder = () => {
     domString += '  </div>';
     domString += '</div>';
   });
+  domString += '  <div id="back">';
+  domString += '  </div>';
   domString += '</div>';
   util.printToDom('movies', domString);
+};
+
+const filteredMovies = (movieId) => {
+  const selectedMovie = movies.filter(x => x.id === movieId);
+  domStringBuilder(selectedMovie);
+  locations.movieLocations(selectedMovie[0].locations);
+  locations.hideFilters();
+  let domString = '';
+  domString += '<div class="col-12 col-sm-6 col-md-4 col-lg-3">';
+  domString += '  <button id="backButton">All Movies</button>';
+  domString += '</div>';
+  document.getElementById('back').innerHTML += domString;
+  document.getElementById('backButton').addEventListener('click', () => {
+    domStringBuilder(movies);
+    const domMovies = Array.from(document.getElementsByClassName('movie'));
+    domMovies.forEach((movie) => {
+      movie.addEventListener('click', () => {
+        filteredMovies(movie.id);
+      });
+    });
+    locations.showFilters();
+    locations.initializeLocations();
+  });
 };
 
 const initializeMovies = () => {
@@ -33,7 +59,13 @@ const initializeMovies = () => {
     .then((response) => {
       const movieResults = response.data.movies;
       movies = movieResults;
-      domStringBuilder();
+      domStringBuilder(movies);
+      const domMovies = Array.from(document.getElementsByClassName('movie'));
+      domMovies.forEach((movie) => {
+        movie.addEventListener('click', () => {
+          filteredMovies(movie.id);
+        });
+      });
     })
     .catch(error => console.error(error));
 };
