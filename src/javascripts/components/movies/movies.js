@@ -1,3 +1,4 @@
+import locations from '../locations/locations';
 import moviesData from '../../helpers/data/moviesData';
 import util from '../../helpers/util';
 
@@ -24,6 +25,8 @@ const domStringBuilder = (moviesToPrint) => {
     domString += '  </div>';
     domString += '</div>';
   });
+  domString += '  <div id="back">';
+  domString += '  </div>';
   domString += '</div>';
   util.printToDom('movies', domString);
 };
@@ -31,6 +34,24 @@ const domStringBuilder = (moviesToPrint) => {
 const filteredMovies = (movieId) => {
   const selectedMovie = movies.filter(x => x.id === movieId);
   domStringBuilder(selectedMovie);
+  locations.movieLocations(selectedMovie[0].locations);
+  locations.hideFilters();
+  let domString = '';
+  domString += '<div class="col-12 col-sm-6 col-md-4 col-lg-3">';
+  domString += '  <button id="backButton">All Movies</button>';
+  domString += '</div>';
+  document.getElementById('back').innerHTML += domString;
+  document.getElementById('backButton').addEventListener('click', () => {
+    domStringBuilder(movies);
+    const domMovies = Array.from(document.getElementsByClassName('movie'));
+    domMovies.forEach((movie) => {
+      movie.addEventListener('click', () => {
+        filteredMovies(movie.id);
+      });
+    });
+    locations.showFilters();
+    locations.initializeLocations();
+  });
 };
 
 const initializeMovies = () => {
